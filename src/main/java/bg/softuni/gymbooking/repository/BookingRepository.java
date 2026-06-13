@@ -1,9 +1,9 @@
 package bg.softuni.gymbooking.repository;
 
 import bg.softuni.gymbooking.entity.Booking;
-import bg.softuni.gymbooking.entity.BookingStatus;
 import bg.softuni.gymbooking.entity.FitnessClass;
 import bg.softuni.gymbooking.entity.User;
+import bg.softuni.gymbooking.entity.enums.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
