@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: gym-class-booking
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gymbooking
+    username: gymuser
+    password: gympass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+  thymeleaf:
+    cache: false
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+server:
+  port: 8080

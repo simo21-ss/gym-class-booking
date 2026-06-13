@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: gym-booking-db
+    environment:
+      POSTGRES_DB: gymbooking
+      POSTGRES_USER: gymuser
+      POSTGRES_PASSWORD: gympass
+    ports:
+      - "5432:5432"
+    volumes:
+      - gym_booking_data:/var/lib/postgresql/data
+
+volumes:
+  gym_booking_data:
