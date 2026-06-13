@@ -8,7 +8,7 @@ Members browse and book classes; trainers manage classes and trainer profiles.
 
 ## Tech Stack
 
-- **Java** 17+
+- **Java** 21 (LTS) — the latest version supported by Spring Boot 3.4.0
 - **Spring Boot** 3.4.0 (Spring MVC, Spring Data JPA, Validation)
 - **Thymeleaf** server-side templating
 - **PostgreSQL** 16 (via Docker)
@@ -43,7 +43,7 @@ All entities use a **UUID** primary key. Relationships are unidirectional `@Many
 
 ## Running Locally
 
-Prerequisites: Java 17+, Docker.
+Prerequisites: Java 21 (a newer JDK such as 25 also works as the build/runtime — the project targets Java 21 bytecode), Docker.
 
 ```bash
 # 1. Start the PostgreSQL database
