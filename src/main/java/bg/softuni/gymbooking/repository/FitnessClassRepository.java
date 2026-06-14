@@ -11,5 +11,7 @@ import java.util.UUID;
 @Repository
 public interface FitnessClassRepository extends JpaRepository<FitnessClass, UUID> {
 
+    List<FitnessClass> findAllByOrderByStartTimeAsc();
+
     List<FitnessClass> findAllByStatusOrderByStartTimeAsc(ClassStatus status);
 }
