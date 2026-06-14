@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Class form')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container narrow">
+    <form th:object="${fitnessClassRequest}" method="post" class="card form"
+          th:action="${editing} ? @{/classes/{id}(id=${classId})} : @{/classes}">
+        <input type="hidden" name="_method" value="put" th:if="${editing}">
+
+        <h1 th:text="${editing} ? 'Edit class' : 'New class'">Class form</h1>
+
+        <label>Title
+            <input type="text" th:field="*{title}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+
+        <label>Description
+            <textarea rows="3" th:field="*{description}"></textarea>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+
+        <label>Start time
+            <input type="datetime-local" th:field="*{startTime}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></p>
+
+        <div class="form-row">
+            <label>Duration (minutes)
+                <input type="number" th:field="*{durationMinutes}">
+            </label>
+            <label>Capacity
+                <input type="number" th:field="*{capacity}">
+            </label>
+        </div>
+        <p class="field-error" th:if="${#fields.hasErrors('durationMinutes')}" th:errors="*{durationMinutes}"></p>
+        <p class="field-error" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></p>
+
+        <label>Trainer
+            <select th:field="*{trainerId}">
+                <option value="">-- select a trainer --</option>
+                <option th:each="t : ${trainers}" th:value="${t.id}"
+                        th:text="${t.name + ' (' + t.specialty + ')'}"></option>
+            </select>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('trainerId')}" th:errors="*{trainerId}"></p>
+
+        <button class="btn btn-primary" type="submit" th:text="${editing} ? 'Save changes' : 'Create class'">Save</button>
+    </form>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

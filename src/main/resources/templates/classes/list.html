@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Classes')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <div class="page-header">
+        <h1>Fitness Classes</h1>
+        <a th:if="${@currentUser.role == 'TRAINER'}" class="btn btn-primary"
+           th:href="@{/classes/new}">+ New class</a>
+    </div>
+
+    <p th:if="${classes.isEmpty()}" class="muted">No classes scheduled yet.</p>
+
+    <div class="card-grid">
+        <article class="card" th:each="c : ${classes}">
+            <div class="card-head">
+                <h2><a th:href="@{/classes/{id}(id=${c.id})}" th:text="${c.title}">Title</a></h2>
+                <span class="badge"
+                      th:classappend="${c.status.name() == 'PUBLISHED'} ? ' badge-green' : ' badge-grey'"
+                      th:text="${c.status}">STATUS</span>
+            </div>
+            <p class="muted" th:text="${c.trainer.name + ' · ' + c.trainer.specialty}">Trainer</p>
+            <p th:text="${#strings.replace(c.startTime, 'T', ' ')}">start</p>
+            <p class="muted" th:text="${c.durationMinutes + ' min · capacity ' + c.capacity}">meta</p>
+
+            <div class="card-actions">
+                <a class="btn" th:href="@{/classes/{id}(id=${c.id})}">Details</a>
+                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED'}"
+                      th:action="@{/classes/{id}/book(id=${c.id})}" method="post" class="inline-form">
+                    <button class="btn btn-primary" type="submit">Book</button>
+                </form>
+                <a th:if="${@currentUser.role == 'TRAINER'}" class="btn"
+                   th:href="@{/classes/{id}/edit(id=${c.id})}">Edit</a>
+            </div>
+        </article>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

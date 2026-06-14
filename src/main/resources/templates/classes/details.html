@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Class details')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container narrow">
+    <article class="card">
+        <div class="card-head">
+            <h1 th:text="${fitnessClass.title}">Title</h1>
+            <span class="badge"
+                  th:classappend="${fitnessClass.status.name() == 'PUBLISHED'} ? ' badge-green' : ' badge-grey'"
+                  th:text="${fitnessClass.status}">STATUS</span>
+        </div>
+        <p th:text="${fitnessClass.description}">Description</p>
+        <ul class="details-list">
+            <li><strong>Trainer:</strong>
+                <span th:text="${fitnessClass.trainer.name + ' (' + fitnessClass.trainer.specialty + ')'}">Trainer</span>
+            </li>
+            <li><strong>Starts:</strong>
+                <span th:text="${#strings.replace(fitnessClass.startTime, 'T', ' ')}">start</span></li>
+            <li><strong>Duration:</strong> <span th:text="${fitnessClass.durationMinutes + ' minutes'}">60</span></li>
+            <li><strong>Capacity:</strong> <span th:text="${fitnessClass.capacity}">10</span></li>
+        </ul>
+
+        <div class="card-actions">
+            <form th:if="${@currentUser.role == 'MEMBER' and fitnessClass.status.name() == 'PUBLISHED'}"
+                  th:action="@{/classes/{id}/book(id=${fitnessClass.id})}" method="post" class="inline-form">
+                <button class="btn btn-primary" type="submit">Book this class</button>
+            </form>
+
+            <a th:if="${@currentUser.role == 'TRAINER'}" class="btn"
+               th:href="@{/classes/{id}/edit(id=${fitnessClass.id})}">Edit</a>
+
+            <form th:if="${@currentUser.role == 'TRAINER'}"
+                  th:action="@{/classes/{id}/status(id=${fitnessClass.id})}" method="post" class="inline-form">
+                <input type="hidden" name="_method" value="put">
+                <button class="btn" type="submit"
+                        th:text="${fitnessClass.status.name() == 'PUBLISHED'} ? 'Cancel class' : 'Publish class'">Toggle</button>
+            </form>
+
+            <form th:if="${@currentUser.role == 'TRAINER'}"
+                  th:action="@{/classes/{id}(id=${fitnessClass.id})}" method="post" class="inline-form"
+                  onsubmit="return confirm('Delete this class permanently?');">
+                <input type="hidden" name="_method" value="delete">
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+        </div>
+    </article>
+    <p><a th:href="@{/classes}">&larr; Back to classes</a></p>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

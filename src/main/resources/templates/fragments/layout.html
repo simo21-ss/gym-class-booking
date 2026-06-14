@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' · GymBooking'">GymBooking</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="navbar" th:fragment="navbar">
+    <a class="brand" th:href="@{/}">🏋️ GymBooking</a>
+    <div class="nav-links">
+        <a th:href="@{/classes}">Classes</a>
+        <a th:if="${@currentUser.role == 'MEMBER'}" th:href="@{/bookings}">My Bookings</a>
+        <a th:if="${@currentUser.role == 'TRAINER'}" th:href="@{/classes/new}">New Class</a>
+        <span th:if="${@currentUser.authenticated}" class="nav-user" th:text="${@currentUser.username}">user</span>
+        <form th:if="${@currentUser.authenticated}" th:action="@{/logout}" method="post" class="inline-form">
+            <button type="submit" class="link-button">Logout</button>
+        </form>
+        <a th:unless="${@currentUser.authenticated}" th:href="@{/login}">Login</a>
+        <a th:unless="${@currentUser.authenticated}" th:href="@{/register}">Register</a>
+    </div>
+</nav>
+<footer class="footer" th:fragment="footer">
+    <p>&copy; GymBooking — SoftUni Spring Fundamentals project</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Error')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container narrow">
+    <div class="card">
+        <h1 th:text="${status} ?: 'Something went wrong'">Error</h1>
+        <p th:text="${message} ?: 'An unexpected error occurred. Please try again.'">Details</p>
+        <a class="btn btn-primary" th:href="@{/}">Back home</a>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

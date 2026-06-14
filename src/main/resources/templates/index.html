@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container">
+    <section class="hero">
+        <h1>Book your next workout</h1>
+        <p>Browse fitness classes led by expert trainers and reserve your spot in seconds.</p>
+        <a class="btn btn-primary" th:href="@{/classes}">Browse classes</a>
+    </section>
+    <section class="features">
+        <div class="feature">
+            <h3>Expert trainers</h3>
+            <p>Yoga, CrossFit, Pilates and more, led by certified instructors.</p>
+        </div>
+        <div class="feature">
+            <h3>Easy booking</h3>
+            <p>Reserve, reschedule or cancel a class in a couple of clicks.</p>
+        </div>
+        <div class="feature">
+            <h3>Limited spots</h3>
+            <p>Every class has a capacity, so you always get personal attention.</p>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Register')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container narrow">
+    <form th:action="@{/register}" th:object="${registerRequest}" method="post" class="card form">
+        <h1>Create an account</h1>
+
+        <label>Username
+            <input type="text" th:field="*{username}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+
+        <label>Password
+            <input type="password" th:field="*{password}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+        <label>Confirm password
+            <input type="password" th:field="*{confirmPassword}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
+
+        <label>Role
+            <select th:field="*{role}">
+                <option value="">-- select a role --</option>
+                <option th:each="r : ${T(bg.softuni.gymbooking.entity.enums.Role).values()}"
+                        th:value="${r}" th:text="${r}"></option>
+            </select>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></p>
+
+        <button class="btn btn-primary" type="submit">Register</button>
+        <p class="muted">Already have an account? <a th:href="@{/login}">Login</a></p>
+    </form>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

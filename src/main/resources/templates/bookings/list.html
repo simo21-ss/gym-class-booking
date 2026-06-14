@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My bookings')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <h1>My Bookings</h1>
+    <p th:if="${bookings.isEmpty()}" class="muted">
+        You have no bookings yet. <a th:href="@{/classes}">Browse classes</a>.
+    </p>
+
+    <div class="card-grid">
+        <article class="card" th:each="b : ${bookings}">
+            <div class="card-head">
+                <h2 th:text="${b.fitnessClass.title}">Class</h2>
+                <span class="badge"
+                      th:classappend="${b.status.name() == 'ACTIVE'} ? ' badge-green' : ' badge-grey'"
+                      th:text="${b.status}">STATUS</span>
+            </div>
+            <p class="muted" th:text="${b.fitnessClass.trainer.name}">Trainer</p>
+            <p th:text="${#strings.replace(b.fitnessClass.startTime, 'T', ' ')}">start</p>
+
+            <div th:if="${b.status.name() == 'ACTIVE'}" class="card-actions">
+                <form th:action="@{/bookings/{id}(id=${b.id})}" method="post" class="inline-form"
+                      onsubmit="return confirm('Cancel this booking?');">
+                    <input type="hidden" name="_method" value="delete">
+                    <button class="btn btn-danger" type="submit">Cancel</button>
+                </form>
+
+                <form th:action="@{/bookings/{id}/reschedule(id=${b.id})}" method="post" class="inline-form">
+                    <input type="hidden" name="_method" value="put">
+                    <select name="newClassId" required>
+                        <option value="">-- reschedule to --</option>
+                        <option th:each="c : ${publishedClasses}" th:value="${c.id}" th:text="${c.title}"></option>
+                    </select>
+                    <button class="btn" type="submit">Reschedule</button>
+                </form>
+            </div>
+        </article>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
