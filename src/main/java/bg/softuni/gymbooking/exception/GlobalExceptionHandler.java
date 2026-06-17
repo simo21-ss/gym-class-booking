@@ -20,7 +20,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             ClassFullException.class,
             DuplicateBookingException.class,
-            BookingNotAllowedException.class
+            BookingNotAllowedException.class,
+            TrainerInUseException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleBusinessRule(RuntimeException ex, Model model) {

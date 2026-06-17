@@ -13,6 +13,7 @@
         <a th:href="@{/classes}">Classes</a>
         <a th:if="${@currentUser.role == 'MEMBER'}" th:href="@{/bookings}">My Bookings</a>
         <a th:if="${@currentUser.role == 'TRAINER'}" th:href="@{/classes/new}">New Class</a>
+        <a th:if="${@currentUser.role == 'TRAINER'}" th:href="@{/trainers}">Trainers</a>
         <span th:if="${@currentUser.authenticated}" class="nav-user" th:text="${@currentUser.username}">user</span>
         <form th:if="${@currentUser.authenticated}" th:action="@{/logout}" method="post" class="inline-form">
             <button type="submit" class="link-button">Logout</button>

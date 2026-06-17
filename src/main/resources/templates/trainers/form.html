@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Trainer form')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container narrow">
+    <form th:object="${trainerRequest}" method="post" class="card form"
+          th:action="${editing} ? @{/trainers/{id}(id=${trainerId})} : @{/trainers}">
+        <input type="hidden" name="_method" value="put" th:if="${editing}">
+
+        <h1 th:text="${editing} ? 'Edit trainer' : 'New trainer'">Trainer form</h1>
+
+        <label>Name
+            <input type="text" th:field="*{name}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+        <label>Specialty
+            <input type="text" th:field="*{specialty}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('specialty')}" th:errors="*{specialty}"></p>
+
+        <label>Bio
+            <textarea rows="4" th:field="*{bio}"></textarea>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}"></p>
+
+        <button class="btn btn-primary" type="submit" th:text="${editing} ? 'Save changes' : 'Create trainer'">Save</button>
+    </form>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

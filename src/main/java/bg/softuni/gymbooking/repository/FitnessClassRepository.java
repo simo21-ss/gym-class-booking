@@ -14,4 +14,6 @@ public interface FitnessClassRepository extends JpaRepository<FitnessClass, UUID
     List<FitnessClass> findAllByOrderByStartTimeAsc();
 
     List<FitnessClass> findAllByStatusOrderByStartTimeAsc(ClassStatus status);
+
+    boolean existsByTrainerId(UUID trainerId);
 }

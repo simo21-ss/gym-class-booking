@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Trainers')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<main class="container">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <div class="page-header">
+        <h1>Trainers</h1>
+        <a class="btn btn-primary" th:href="@{/trainers/new}">+ New trainer</a>
+    </div>
+
+    <p th:if="${trainers.isEmpty()}" class="muted">No trainers yet.</p>
+
+    <div class="card-grid">
+        <article class="card" th:each="t : ${trainers}">
+            <h2 th:text="${t.name}">Name</h2>
+            <p class="muted" th:text="${t.specialty}">Specialty</p>
+            <p th:text="${t.bio}">Bio</p>
+            <div class="card-actions">
+                <a class="btn" th:href="@{/trainers/{id}/edit(id=${t.id})}">Edit</a>
+                <form th:action="@{/trainers/{id}(id=${t.id})}" method="post" class="inline-form"
+                      onsubmit="return confirm('Delete this trainer?');">
+                    <input type="hidden" name="_method" value="delete">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </div>
+        </article>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
