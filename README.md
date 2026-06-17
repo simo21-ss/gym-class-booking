@@ -3,9 +3,6 @@
 A web application for booking gym fitness classes, built for the **SoftUni Spring Fundamentals** individual project.
 Members browse and book classes; trainers manage classes and trainer profiles.
 
-> **Status:** in active development. This repository is built incrementally over several days. The domain model,
-> repositories, and infrastructure are in place; web functionality is being added next.
-
 ## Tech Stack
 
 - **Java** 21 (LTS) — the latest version supported by Spring Boot 3.4.0
@@ -27,19 +24,38 @@ Members browse and book classes; trainers manage classes and trainer profiles.
 
 All entities use a **UUID** primary key. Relationships are unidirectional `@ManyToOne`.
 
-## Planned Features & Functionalities
+## Features & Functionalities
+
+The four+ valid domain functionalities (each is user-triggered, hits a POST/PUT/DELETE endpoint, and shows a visible result):
 
 - **Fitness class management (full CRUD)** — trainers create, edit, delete, and publish/cancel classes
-- **Bookings (full CRUD)** — members book, reschedule, cancel, and view their bookings
-- **Trainer management (full CRUD)** — trainers create, edit, and delete trainer profiles
-- **Authentication** — register, session-based login/logout, role-based access control
-- **Server-side validation** with field-level error messages and custom business exceptions
+- **Bookings (full CRUD)** — members book, reschedule, cancel, and view their own bookings, with capacity, duplicate, and past-class rules enforced
+- **Trainer management (full CRUD)** — trainers create, edit, and delete trainer profiles (deletion is blocked while a trainer still has classes)
+- **Class publish/cancel** — trainers toggle a class status
+
+Plus supporting behaviour:
+
+- **Authentication** — register, session-based login/logout, role-based access control (does not count toward the functionalities above, per the assignment)
+- **Server-side validation** on every form, with field-level error messages and custom business exceptions handled by a global `@ControllerAdvice`
+
+## Web Pages
+
+Home (static) · Register · Login · Classes list · Class details · Class form (create/edit) · My bookings · Trainers list · Trainer form (create/edit) · Error page.
 
 ## Roles & Access
 
 - **Guest** — register, login, and browse classes
 - **Member** — book, reschedule, and cancel classes; view own bookings
 - **Trainer** — manage fitness classes and trainer profiles
+
+## Demo Accounts
+
+Seeded automatically on first startup:
+
+| Username | Password | Role |
+|----------|----------|------|
+| `trainer` | `trainer123` | TRAINER |
+| `member` | `member123` | MEMBER |
 
 ## Running Locally
 
