@@ -12,6 +12,7 @@ Members browse and book classes; trainers manage classes and trainer profiles.
 - **Maven** (with Maven Wrapper)
 - **BCrypt** (`spring-security-crypto`) for password hashing
 - Custom **session-based authentication** (`user_id` stored in the HTTP session)
+- **JUnit 5** + **Mockito** for unit tests
 
 ## Domain Model
 
@@ -70,6 +71,16 @@ docker compose up -d
 ```
 
 The app will be available at http://localhost:8080.
+
+## Testing
+
+The service layer is covered by **JUnit 5 + Mockito** unit tests (no database required — repositories are mocked):
+
+```bash
+./mvnw test
+```
+
+This runs 25 tests covering registration/login, fitness class CRUD and status toggling, trainer CRUD with the delete-guard, and all booking business rules (capacity, duplicate, past-class, ownership).
 
 ## Integrations
 
