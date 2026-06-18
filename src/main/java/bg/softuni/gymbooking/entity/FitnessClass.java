@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,4 +50,13 @@ public class FitnessClass {
     @ManyToOne(optional = false)
     @JoinColumn(name = "trainer_id", nullable = false)
     private Trainer trainer;
+
+    /**
+     * Derived (not persisted): true once the class start time has passed.
+     * Used by the views to mark a class as expired and hide the booking action.
+     */
+    @Transient
+    public boolean isExpired() {
+        return startTime != null && startTime.isBefore(LocalDateTime.now());
+    }
 }

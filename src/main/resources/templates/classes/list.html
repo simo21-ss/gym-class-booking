@@ -19,8 +19,8 @@
             <div class="card-head">
                 <h2><a th:href="@{/classes/{id}(id=${c.id})}" th:text="${c.title}">Title</a></h2>
                 <span class="badge"
-                      th:classappend="${c.status.name() == 'PUBLISHED'} ? ' badge-green' : ' badge-grey'"
-                      th:text="${c.status}">STATUS</span>
+                      th:classappend="${c.status.name() == 'PUBLISHED' and !c.expired} ? ' badge-green' : ' badge-grey'"
+                      th:text="${c.status.name() == 'PUBLISHED' and c.expired ? 'EXPIRED' : c.status}">STATUS</span>
             </div>
             <p class="muted" th:text="${c.trainer.name + ' · ' + c.trainer.specialty}">Trainer</p>
             <p th:text="${#strings.replace(c.startTime, 'T', ' ')}">start</p>
@@ -28,7 +28,7 @@
 
             <div class="card-actions">
                 <a class="btn" th:href="@{/classes/{id}(id=${c.id})}">Details</a>
-                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED'}"
+                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED' and !c.expired}"
                       th:action="@{/classes/{id}/book(id=${c.id})}" method="post" class="inline-form">
                     <button class="btn btn-primary" type="submit">Book</button>
                 </form>
