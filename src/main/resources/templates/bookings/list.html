@@ -23,14 +23,14 @@
             <p class="muted" th:text="${b.fitnessClass.trainer.name}">Trainer</p>
             <p th:text="${#strings.replace(b.fitnessClass.startTime, 'T', ' ')}">start</p>
 
-            <div th:if="${b.status.name() == 'ACTIVE'}" class="card-actions">
+            <div th:if="${b.status.name() == 'ACTIVE'}" class="card-actions card-actions-stack">
                 <form th:action="@{/bookings/{id}(id=${b.id})}" method="post" class="inline-form"
                       onsubmit="return confirm('Cancel this booking?');">
                     <input type="hidden" name="_method" value="delete">
                     <button class="btn btn-danger" type="submit">Cancel</button>
                 </form>
 
-                <form th:action="@{/bookings/{id}/reschedule(id=${b.id})}" method="post" class="inline-form">
+                <form th:action="@{/bookings/{id}/reschedule(id=${b.id})}" method="post" class="reschedule-form">
                     <input type="hidden" name="_method" value="put">
                     <select name="newClassId" required>
                         <option value="">-- move to another class --</option>
