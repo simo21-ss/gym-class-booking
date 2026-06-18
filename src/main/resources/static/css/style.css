@@ -21,6 +21,15 @@ body {
     color: var(--ink);
     background: var(--bg);
     line-height: 1.5;
+    /* Sticky footer: fill the viewport so the footer sits at the bottom */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content grows to push the footer down on short pages */
+main {
+    flex: 1 0 auto;
 }
 
 a {
