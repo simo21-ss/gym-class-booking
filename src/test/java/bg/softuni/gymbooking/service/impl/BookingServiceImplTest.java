@@ -198,6 +198,23 @@ class BookingServiceImplTest {
     }
 
     @Test
+    void reschedule_toSameClass_throws() {
+        UUID uid = UUID.randomUUID();
+        UUID bid = UUID.randomUUID();
+        UUID classId = UUID.randomUUID();
+        Booking booking = new Booking();
+        booking.setId(bid);
+        booking.setUser(user(uid));
+        booking.setStatus(BookingStatus.ACTIVE);
+        booking.setFitnessClass(publishedClass(classId, 10, LocalDateTime.now().plusDays(1)));
+        when(bookingRepository.findById(bid)).thenReturn(Optional.of(booking));
+
+        assertThatThrownBy(() -> bookingService.reschedule(bid, classId, uid))
+                .isInstanceOf(BookingNotAllowedException.class);
+        verify(bookingRepository, never()).save(any());
+    }
+
+    @Test
     void findMyBookings_returnsUserBookings() {
         UUID uid = UUID.randomUUID();
         User user = user(uid);

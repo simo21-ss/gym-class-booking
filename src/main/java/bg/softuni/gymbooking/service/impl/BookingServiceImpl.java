@@ -62,6 +62,9 @@ public class BookingServiceImpl implements BookingService {
         if (booking.getStatus() != BookingStatus.ACTIVE) {
             throw new BookingNotAllowedException("Only active bookings can be rescheduled");
         }
+        if (booking.getFitnessClass().getId().equals(newClassId)) {
+            throw new BookingNotAllowedException("The booking is already for this class");
+        }
 
         FitnessClass newClass = fitnessClassService.getById(newClassId);
         validateBookable(booking.getUser(), newClass);

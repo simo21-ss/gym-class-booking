@@ -32,9 +32,9 @@
                 <form th:action="@{/bookings/{id}/reschedule(id=${b.id})}" method="post" class="inline-form">
                     <input type="hidden" name="_method" value="put">
                     <select name="newClassId" required>
-                        <option value="">-- reschedule to --</option>
+                        <option value="">-- move to another class --</option>
                         <option th:each="c : ${publishedClasses}"
-                                th:if="${c.startTime == null or !c.startTime.isBefore(T(java.time.LocalDateTime).now())}"
+                                th:if="${(c.startTime == null or !c.startTime.isBefore(T(java.time.LocalDateTime).now())) and c.id != b.fitnessClass.id}"
                                 th:value="${c.id}" th:text="${c.title}"></option>
                     </select>
                     <button class="btn" type="submit">Reschedule</button>
