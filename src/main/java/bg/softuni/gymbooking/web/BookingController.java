@@ -1,6 +1,9 @@
 package bg.softuni.gymbooking.web;
 
 import bg.softuni.gymbooking.entity.enums.Role;
+import bg.softuni.gymbooking.exception.BookingNotAllowedException;
+import bg.softuni.gymbooking.exception.ClassFullException;
+import bg.softuni.gymbooking.exception.DuplicateBookingException;
 import bg.softuni.gymbooking.security.CurrentUser;
 import bg.softuni.gymbooking.security.RequireRole;
 import bg.softuni.gymbooking.service.BookingService;
@@ -43,8 +46,12 @@ public class BookingController {
     @PostMapping("/classes/{id}/book")
     @RequireRole(Role.MEMBER)
     public String book(@PathVariable("id") UUID classId, RedirectAttributes redirectAttributes) {
-        bookingService.book(classId, currentUser.getId());
-        redirectAttributes.addFlashAttribute("success", "Class booked successfully.");
+        try {
+            bookingService.book(classId, currentUser.getId());
+            redirectAttributes.addFlashAttribute("success", "Class booked successfully.");
+        } catch (BookingNotAllowedException | DuplicateBookingException | ClassFullException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
         return "redirect:/bookings";
     }
 
@@ -53,8 +60,12 @@ public class BookingController {
     public String reschedule(@PathVariable UUID id,
                              @RequestParam UUID newClassId,
                              RedirectAttributes redirectAttributes) {
-        bookingService.reschedule(id, newClassId, currentUser.getId());
-        redirectAttributes.addFlashAttribute("success", "Booking rescheduled.");
+        try {
+            bookingService.reschedule(id, newClassId, currentUser.getId());
+            redirectAttributes.addFlashAttribute("success", "Booking rescheduled.");
+        } catch (BookingNotAllowedException | DuplicateBookingException | ClassFullException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
         return "redirect:/bookings";
     }
 

@@ -5,6 +5,7 @@
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <main class="container">
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <h1>My Bookings</h1>
     <p th:if="${bookings.isEmpty()}" class="muted">

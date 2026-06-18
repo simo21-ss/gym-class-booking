@@ -302,6 +302,12 @@ a:hover {
     border: 1px solid #bbf7d0;
 }
 
+.alert-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
 .field-error {
     color: var(--danger);
     font-size: 0.85rem;
