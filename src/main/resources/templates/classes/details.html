@@ -20,14 +20,17 @@
             <li><strong>Starts:</strong>
                 <span th:text="${#strings.replace(fitnessClass.startTime, 'T', ' ')}">start</span></li>
             <li><strong>Duration:</strong> <span th:text="${fitnessClass.durationMinutes + ' minutes'}">60</span></li>
-            <li><strong>Capacity:</strong> <span th:text="${fitnessClass.capacity}">10</span></li>
+            <li><strong>Spots left:</strong>
+                <span th:text="${spotsLeft + ' of ' + fitnessClass.capacity}">10</span></li>
         </ul>
 
         <div class="card-actions">
-            <form th:if="${@currentUser.role == 'MEMBER' and fitnessClass.status.name() == 'PUBLISHED' and !expired}"
+            <form th:if="${@currentUser.role == 'MEMBER' and fitnessClass.status.name() == 'PUBLISHED' and !expired and spotsLeft > 0}"
                   th:action="@{/classes/{id}/book(id=${fitnessClass.id})}" method="post" class="inline-form">
                 <button class="btn btn-primary" type="submit">Book this class</button>
             </form>
+            <span th:if="${@currentUser.role == 'MEMBER' and fitnessClass.status.name() == 'PUBLISHED' and !expired and spotsLeft <= 0}"
+                  class="muted">Fully booked</span>
 
             <a th:if="${@currentUser.role == 'TRAINER'}" class="btn"
                th:href="@{/classes/{id}/edit(id=${fitnessClass.id})}">Edit</a>

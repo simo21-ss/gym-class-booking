@@ -80,6 +80,11 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.save(booking);
     }
 
+    @Override
+    public long countActiveBookings(FitnessClass fitnessClass) {
+        return bookingRepository.countByFitnessClassAndStatus(fitnessClass, BookingStatus.ACTIVE);
+    }
+
     private Booking getOwnedBooking(UUID bookingId, UUID userId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));

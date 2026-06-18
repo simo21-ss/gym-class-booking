@@ -25,14 +25,16 @@
             </div>
             <p class="muted" th:text="${c.trainer.name + ' · ' + c.trainer.specialty}">Trainer</p>
             <p th:text="${#strings.replace(c.startTime, 'T', ' ')}">start</p>
-            <p class="muted" th:text="${c.durationMinutes + ' min · capacity ' + c.capacity}">meta</p>
+            <p class="muted" th:text="${c.durationMinutes + ' min · ' + spotsLeft.get(c.id) + ' of ' + c.capacity + ' spots left'}">meta</p>
 
             <div class="card-actions">
                 <a class="btn" th:href="@{/classes/{id}(id=${c.id})}">Details</a>
-                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED' and !expired}"
+                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED' and !expired and spotsLeft.get(c.id) > 0}"
                       th:action="@{/classes/{id}/book(id=${c.id})}" method="post" class="inline-form">
                     <button class="btn btn-primary" type="submit">Book</button>
                 </form>
+                <span th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED' and !expired and spotsLeft.get(c.id) <= 0}"
+                      class="muted">Fully booked</span>
                 <a th:if="${@currentUser.role == 'TRAINER'}" class="btn"
                    th:href="@{/classes/{id}/edit(id=${c.id})}">Edit</a>
             </div>

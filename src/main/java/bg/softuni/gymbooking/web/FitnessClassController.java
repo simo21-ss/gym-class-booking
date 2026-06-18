@@ -4,6 +4,7 @@ import bg.softuni.gymbooking.dto.FitnessClassRequest;
 import bg.softuni.gymbooking.entity.FitnessClass;
 import bg.softuni.gymbooking.entity.enums.Role;
 import bg.softuni.gymbooking.security.RequireRole;
+import bg.softuni.gymbooking.service.BookingService;
 import bg.softuni.gymbooking.service.FitnessClassService;
 import bg.softuni.gymbooking.service.TrainerService;
 import jakarta.validation.Valid;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -26,15 +30,25 @@ public class FitnessClassController {
 
     private final FitnessClassService fitnessClassService;
     private final TrainerService trainerService;
+    private final BookingService bookingService;
 
-    public FitnessClassController(FitnessClassService fitnessClassService, TrainerService trainerService) {
+    public FitnessClassController(FitnessClassService fitnessClassService,
+                                  TrainerService trainerService,
+                                  BookingService bookingService) {
         this.fitnessClassService = fitnessClassService;
         this.trainerService = trainerService;
+        this.bookingService = bookingService;
     }
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("classes", fitnessClassService.findAll());
+        List<FitnessClass> classes = fitnessClassService.findAll();
+        Map<UUID, Integer> spotsLeft = new HashMap<>();
+        for (FitnessClass fitnessClass : classes) {
+            spotsLeft.put(fitnessClass.getId(), spotsLeftFor(fitnessClass));
+        }
+        model.addAttribute("classes", classes);
+        model.addAttribute("spotsLeft", spotsLeft);
         return "classes/list";
     }
 
@@ -65,8 +79,14 @@ public class FitnessClassController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable UUID id, Model model) {
-        model.addAttribute("fitnessClass", fitnessClassService.getById(id));
+        FitnessClass fitnessClass = fitnessClassService.getById(id);
+        model.addAttribute("fitnessClass", fitnessClass);
+        model.addAttribute("spotsLeft", spotsLeftFor(fitnessClass));
         return "classes/details";
+    }
+
+    private int spotsLeftFor(FitnessClass fitnessClass) {
+        return fitnessClass.getCapacity() - (int) bookingService.countActiveBookings(fitnessClass);
     }
 
     @GetMapping("/{id}/edit")
