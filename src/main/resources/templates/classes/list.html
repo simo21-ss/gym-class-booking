@@ -15,12 +15,13 @@
     <p th:if="${classes.isEmpty()}" class="muted">No classes scheduled yet.</p>
 
     <div class="card-grid">
-        <article class="card" th:each="c : ${classes}">
+        <article class="card" th:each="c : ${classes}"
+                 th:with="expired=${c.startTime != null and c.startTime.isBefore(T(java.time.LocalDateTime).now())}">
             <div class="card-head">
                 <h2><a th:href="@{/classes/{id}(id=${c.id})}" th:text="${c.title}">Title</a></h2>
                 <span class="badge"
-                      th:classappend="${c.status.name() == 'PUBLISHED' and !c.expired} ? ' badge-green' : ' badge-grey'"
-                      th:text="${c.status.name() == 'PUBLISHED' and c.expired ? 'EXPIRED' : c.status}">STATUS</span>
+                      th:classappend="${c.status.name() == 'PUBLISHED' and !expired} ? ' badge-green' : ' badge-grey'"
+                      th:text="${c.status.name() == 'PUBLISHED' and expired ? 'EXPIRED' : c.status}">STATUS</span>
             </div>
             <p class="muted" th:text="${c.trainer.name + ' · ' + c.trainer.specialty}">Trainer</p>
             <p th:text="${#strings.replace(c.startTime, 'T', ' ')}">start</p>
@@ -28,7 +29,7 @@
 
             <div class="card-actions">
                 <a class="btn" th:href="@{/classes/{id}(id=${c.id})}">Details</a>
-                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED' and !c.expired}"
+                <form th:if="${@currentUser.role == 'MEMBER' and c.status.name() == 'PUBLISHED' and !expired}"
                       th:action="@{/classes/{id}/book(id=${c.id})}" method="post" class="inline-form">
                     <button class="btn btn-primary" type="submit">Book</button>
                 </form>

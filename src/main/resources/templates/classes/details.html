@@ -4,12 +4,13 @@
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 <main class="container narrow">
-    <article class="card">
+    <article class="card"
+             th:with="expired=${fitnessClass.startTime != null and fitnessClass.startTime.isBefore(T(java.time.LocalDateTime).now())}">
         <div class="card-head">
             <h1 th:text="${fitnessClass.title}">Title</h1>
             <span class="badge"
-                  th:classappend="${fitnessClass.status.name() == 'PUBLISHED' and !fitnessClass.expired} ? ' badge-green' : ' badge-grey'"
-                  th:text="${fitnessClass.status.name() == 'PUBLISHED' and fitnessClass.expired ? 'EXPIRED' : fitnessClass.status}">STATUS</span>
+                  th:classappend="${fitnessClass.status.name() == 'PUBLISHED' and !expired} ? ' badge-green' : ' badge-grey'"
+                  th:text="${fitnessClass.status.name() == 'PUBLISHED' and expired ? 'EXPIRED' : fitnessClass.status}">STATUS</span>
         </div>
         <p th:text="${fitnessClass.description}">Description</p>
         <ul class="details-list">
@@ -23,7 +24,7 @@
         </ul>
 
         <div class="card-actions">
-            <form th:if="${@currentUser.role == 'MEMBER' and fitnessClass.status.name() == 'PUBLISHED' and !fitnessClass.expired}"
+            <form th:if="${@currentUser.role == 'MEMBER' and fitnessClass.status.name() == 'PUBLISHED' and !expired}"
                   th:action="@{/classes/{id}/book(id=${fitnessClass.id})}" method="post" class="inline-form">
                 <button class="btn btn-primary" type="submit">Book this class</button>
             </form>

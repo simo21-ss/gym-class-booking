@@ -33,7 +33,8 @@
                     <input type="hidden" name="_method" value="put">
                     <select name="newClassId" required>
                         <option value="">-- reschedule to --</option>
-                        <option th:each="c : ${publishedClasses}" th:if="${!c.expired}"
+                        <option th:each="c : ${publishedClasses}"
+                                th:if="${c.startTime == null or !c.startTime.isBefore(T(java.time.LocalDateTime).now())}"
                                 th:value="${c.id}" th:text="${c.title}"></option>
                     </select>
                     <button class="btn" type="submit">Reschedule</button>
