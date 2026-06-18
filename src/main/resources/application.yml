@@ -20,6 +20,12 @@ spring:
   thymeleaf:
     cache: false
 
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          no-cache: true
+
   mvc:
     hiddenmethod:
       filter:
